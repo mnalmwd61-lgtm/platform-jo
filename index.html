@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة التعليم الإلكتروني - أ/ عبد العزيز عمر</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #2563eb;
+            --accent-hover: #1d4ed8;
+            --math-gold: #f59e0b;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --border-color: #334155;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            direction: rtl;
+            min-height: 100vh;
+        }
+
+        /* تسجيل الدخول */
+        .login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 35px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .math-badge {
+            background: linear-gradient(135deg, var(--accent-color), var(--math-gold));
+            width: 65px;
+            height: 65px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            margin: 0 auto 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: var(--text-sub);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-primary:hover { background: var(--accent-hover); }
+
+        .btn-secondary {
+            background: #475569;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* الهيدر والتصميم العام */
+        .navbar {
+            background-color: var(--card-bg);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .app-layout {
+            display: flex;
+            min-height: calc(100vh - 75px);
+        }
+
+        .sidebar {
+            width: 260px;
+            background: var(--card-bg);
+            border-left: 1px solid var(--border-color);
+            padding: 20px 10px;
+        }
+
+        .nav-item {
+            color: var(--text-sub);
+            padding: 12px 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            margin-bottom: 8px;
+            transition: 0.2s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            border-right: 4px solid var(--accent-color);
+            padding-right: 12px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .question-box {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--card-bg);
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 6px;
+        }
+
+        .timer-badge {
+            background: var(--math-gold);
+            color: #000;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th { background: #0f172a; color: var(--text-sub); }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .review-correct { background: rgba(16, 185, 129, 0.2); border: 1px solid var(--success); }
+        .review-wrong { background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); }
+    </style>
+</head>
+<body>
+
+    <!-- شاشة تسجيل الدخول -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-box">
+            <div class="math-badge">∑</div>
+            <h2>منصة أ/ عبد العزيز عمر</h2>
+            <p style="color: var(--text-sub); margin-bottom: 20px;">الرياضيات للمراحل الإعدادية والثانوية</p>
+
+            <div class="form-group">
+                <label>نوع الحساب</label>
+                <select id="userRole" class="form-control" onchange="toggleRoleFields()">
+                    <option value="student">طالب</option>
+                    <option value="teacher">أستاذ / معلم</option>
+                </select>
+            </div>
+
+            <!-- حقول حساب الطالب -->
+            <div id="studentFields">
+                <div class="form-group">
+                    <label>الاسم بالكامل</label>
+                    <input type="text" id="studentName" class="form-control" placeholder="أدخل اسمك الكامل">
+                </div>
+                <div class="form-group">
+                    <label>المرحلة التعليمية</label>
+                    <select id="studentGrade" class="form-control">
+                        <option value="الصف الأول الإعدادي">الصف الأول الإعدادي</option>
+                        <option value="الصف الثاني الإعدادي">الصف الثاني الإعدادي</option>
+                        <option value="الصف الثالث الإعدادي">الصف الثالث الإعدادي</option>
+                        <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+                        <option value="الصف الثاني الثانوي">الصف الثاني الثانوي (بكالوريا)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>رقم هاتف الطالب</label>
+                    <input type="tel" id="studentPhone" class="form-control" placeholder="أدخل رقم هاتفك">
+                </div>
+                <div class="form-group">
+                    <label>رقم هاتف ولي الأمر</label>
+                    <input type="tel" id="parentPhone" class="form-control" placeholder="أدخل رقم هاتف ولي الأمر">
+                </div>
+                <div class="form-group">
+                    <label>كلمة السر</label>
+                    <input type="password" id="studentPass" class="form-control" placeholder="أدخل كلمة السر">
+                </div>
+            </div>
+
+            <!-- حقول حساب المعلم -->
+            <div id="teacherFields" style="display: none;">
+                <div class="form-group">
+                    <label>كلمة سر المعلم</label>
+                    <input type="password" id="teacherPass" class="form-control" placeholder="أدخل كلمة السر (55555)">
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="login()">دخول المنصة</button>
+        </div>
+    </div>
+
+    <!-- التطبيق الرئيسي -->
+    <div id="mainApp" style="display: none;">
+        <div class="navbar">
+            <div class="logo-container">
+                <div style="font-size: 24px; color: var(--math-gold); font-weight: bold;">∑</div>
+                <div>
+                    <h1 style="font-size: 18px;">أ/ عبد العزيز عمر</h1>
+                    <p style="font-size: 11px; color: var(--math-gold);">منصة التعليم الإلكتروني</p>
+                </div>
+            </div>
+            <div>
+                <span id="welcomeText" style="margin-left: 15px; font-weight: bold;"></span>
+                <button class="btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+            </div>
+        </div>
+
+        <div class="app-layout">
+            <!-- الشريط الجانبي -->
+            <div class="sidebar">
+                <div class="nav-item active" onclick="switchTab('dashboard')"><i class="fas fa-home"></i> الرئيسية</div>
+                <div class="nav-item" onclick="switchTab('videos')"><i class="fas fa-video"></i> الفيديوهات</div>
+                <div class="nav-item" onclick="switchTab('exams')"><i class="fas fa-file-alt"></i> الامتحانات</div>
+                <div class="nav-item" onclick="switchTab('homework')"><i class="fas fa-book"></i> الواجبات</div>
+                <div class="nav-item student-only" onclick="switchTab('profile')"><i class="fas fa-user"></i> الملف الشخصي</div>
+                <div class="nav-item teacher-only" onclick="switchTab('manageStudents')" style="display: none;"><i class="fas fa-users"></i> إدارة الطلاب</div>
+            </div>
+
+            <!-- المحتوى الرئيسي -->
+            <div class="main-content">
+                
+                <!-- الرئيسية -->
+                <div id="dashboardSection" class="content-section active">
+                    <h2 class="section-title">مرحباً بك في المنصة</h2>
+                    <div class="cards-grid">
+                        <div class="card">
+                            <h3><i class="fas fa-bullhorn" style="color: var(--math-gold);"></i> تنبيهات هامة</h3>
+                            <p>تابع دروسك، امتحاناتك، والواجبات المدرسية بشكل دوري عبر المنصة.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- قسم الفيديوهات -->
+                <div id="videosSection" class="content-section">
+                    <h2 class="section-title">الفيديوهات والشروحات</h2>
+                    
+                    <div class="teacher-only" style="display: none; margin-bottom: 25px;">
+                        <div class="card">
+                            <h3>نشر فيديو جديد</h3>
+                            <div class="form-group">
+                                <label>عنوان الفيديو</label>
+                                <input type="text" id="vidTitle" class="form-control" placeholder="عنوان الدرس">
+                            </div>
+                            <div class="form-group">
+                                <label>رابط الفيديو (YouTube Embed URL أو رابط يوتيوب)</label>
+                                <input type="text" id="vidUrl" class="form-control" placeholder="https://www.youtube.com/embed/...">
+                            </div>
+                            <div class="form-group">
+                                <label>المرحلة الموجه لها الفيديو</label>
+                                <select id="vidGrade" class="form-control">
+                                    <option value="all">عام (جميع المراحل)</option>
+                                    <option value="الصف الأول الإعدادي">الصف الأول الإعدادي</option>
+                                    <option value="الصف الثاني الإعدادي">الصف الثاني الإعدادي</option>
+                                    <option value="الصف الثالث الإعدادي">الصف الثالث الإعدادي</option>
+                                    <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+                                    <option value="الصف الثاني الثانوي">الصف الثاني الثانوي (بكالوريا)</option>
+                                </select>
+                            </div>
+                            <button class="btn-success" onclick="saveVideo()">نشر الفيديو</button>
+                        </div>
+                    </div>
+
+                    <div class="cards-grid" id="videosList"></div>
+                </div>
+
+                <!-- قسم الامتحانات -->
+                <div id="examsSection" class="content-section">
+                    <h2 class="section-title">الامتحانات</h2>
+
+                    <div class="teacher-only" style="display: none; margin-bottom: 30px;">
+                        <div class="card">
+                            <h3>إنشاء امتحان جديد</h3>
+                            <div class="form-group">
+                                <label>عنوان الامتحان</label>
+                                <input type="text" id="examTitle" class="form-control" placeholder="عنوان الامتحان">
+                            </div>
+                            <div class="form-group">
+                                <label>وقت الامتحان (بالدقائق)</label>
+                                <input type="number" id="examDuration" class="form-control" value="30">
+                            </div>
+
+                            <div id="questionsContainer">
+                                <h4>الأسئلة:</h4>
+                            </div>
+
+                            <div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
+                                <button class="btn-secondary" onclick="addQuestionField()"><i class="fas fa-plus"></i> زيادة سؤال</button>
+                                <button class="btn-success" onclick="saveExam()"><i class="fas fa-save"></i> حفظ ونشر الامتحان</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cards-grid" id="examsList"></div>
+                </div>
+
+                <!-- أداء الامتحان للطالب -->
+                <div id="takeExamSection" class="content-section">
+                    <div class="card">
+                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <h2 id="currentExamTitle">الامتحان</h2>
+                            <div class="timer-badge"><i class="fas fa-clock"></i> الوقت المتبقي: <span id="timerDisplay">00:00</span></div>
+                        </div>
+                        <hr style="border-color: var(--border-color); margin: 15px 0;">
+                        
+                        <div id="singleQuestionRender"></div>
+
+                        <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                            <button class="btn-secondary" id="prevQBtn" onclick="navigateQuestion(-1)"><i class="fas fa-arrow-right"></i> السؤال السابق</button>
+                            <button class="btn-secondary" id="nextQBtn" onclick="navigateQuestion(1)">السؤال التالي <i class="fas fa-arrow-left"></i></button>
+                        </div>
+
+                        <button class="btn-success" onclick="submitExam(false)" style="margin-top: 25px; width: 100%;">تسليم الامتحان النهائي</button>
+                    </div>
+                </div>
+
+                <!-- قسم الواجبات -->
+                <div id="homeworkSection" class="content-section">
+                    <h2 class="section-title">الواجبات المنزلية</h2>
+                    <div class="teacher-only" style="display: none; margin-bottom: 20px;">
+                        <div class="card">
+                            <h3>نشر واجب جديد</h3>
+                            <div class="form-group">
+                                <label>عنوان الواجب</label>
+                                <input type="text" id="hwTitle" class="form-control" placeholder="عنوان الواجب">
+                            </div>
+                            <div class="form-group">
+                                <label>تفاصيل الواجب</label>
+                                <textarea id="hwDesc" class="form-control" placeholder="اكتب تفاصيل الواجب..."></textarea>
+                            </div>
+                            <button class="btn-success" onclick="saveHomework()">نشر الواجب</button>
+                        </div>
+                    </div>
+
+                    <div class="cards-grid" id="homeworkList"></div>
+                </div>
+
+                <!-- الملف الشخصي للطالب -->
+                <div id="profileSection" class="content-section">
+                    <h2 class="section-title">الملف الشخصي ونتائجك</h2>
+                    <div class="card" style="margin-bottom: 20px;">
+                        <h3 id="profName">الاسم: </h3>
+                        <p id="profGrade">المرحلة: </p>
+                        <p id="profStudentPhone">رقم الطالب: </p>
+                        <p id="profParentPhone">رقم ولي الأمر: </p>
+                    </div>
+
+                    <h3>سجل نتائج الامتحانات</h3>
+                    <table style="margin-top: 10px;">
+                        <thead>
+                            <tr>
+                                <th>الامتحان</th>
+                                <th>الدرجة</th>
+                                <th>التاريخ</th>
+                                <th>مراجعة الإجابات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentResultsTable"></tbody>
+                    </table>
+
+                    <div id="reviewExamBox" style="margin-top: 25px; display: none;" class="card">
+                        <h3>مراجعة تفاصيل الإجابات والحل الصحيح</h3>
+                        <div id="reviewQuestionsContent"></div>
+                    </div>
+                </div>
+
+                <!-- لوحة تحكم المعلم للطلاب -->
+                <div id="manageStudentsSection" class="content-section">
+                    <h2 class="section-title">إدارة حسابات الطلاب والنتائج</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>اسم الطالب</th>
+                                <th>المرحلة الدراسية</th>
+                                <th>رقم الطالب</th>
+                                <th>رقم ولي الأمر</th>
+                                <th>النتائج</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teachersStudentsTable"></tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+        let students = JSON.parse(localStorage.getItem('students')) || [];
+        let exams = JSON.parse(localStorage.getItem('exams')) || [];
+        let homeworks = JSON.parse(localStorage.getItem('homeworks')) || [];
+        let videos = JSON.parse(localStorage.getItem('videos')) || [];
+        let results = JSON.parse(localStorage.getItem('results')) || [];
+
+        let currentExamTimer = null;
+        let activeExam = null;
+        let currentQuestionIndex = 0;
+        let studentAnswers = [];
+        let examTimeLeft = 0;
+        let questionCounter = 0;
+
+        window.onload = function() {
+            if (currentUser) showApp();
+            else showLogin();
+        };
+
+        function toggleRoleFields() {
+            const role = document.getElementById('userRole').value;
+            document.getElementById('studentFields').style.display = role === 'student' ? 'block' : 'none';
+            document.getElementById('teacherFields').style.display = role === 'teacher' ? 'block' : 'none';
+        }
+
+        function login() {
+            const role = document.getElementById('userRole').value;
+
+            if (role === 'student') {
+                const name = document.getElementById('studentName').value.trim();
+                const grade = document.getElementById('studentGrade').value;
+                const studentPhone = document.getElementById('studentPhone').value.trim();
+                const parentPhone = document.getElementById('parentPhone').value.trim();
+                const pass = document.getElementById('studentPass').value.trim();
+
+                if (!name || !studentPhone || !parentPhone || !pass) {
+                    return alert('يرجى تعبئة كافة بيانات الطالب كاملة');
+                }
+
+                currentUser = { role, name, grade, studentPhone, parentPhone, pass };
+                
+                const idx = students.findIndex(s => s.studentPhone === studentPhone);
+                if (idx > -1) students[idx] = currentUser;
+                else students.push(currentUser);
+
+                localStorage.setItem('students', JSON.stringify(students));
+            } else {
+                const pass = document.getElementById('teacherPass').value.trim();
+                if (pass !== '55555') return alert('كلمة سر المعلم خاطئة!');
+                currentUser = { role: 'teacher', name: 'أستاذ عبد العزيز عمر' };
+            }
+
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            showApp();
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            currentUser = null;
+            if(currentExamTimer) clearInterval(currentExamTimer);
+            showLogin();
+        }
+
+        function showLogin() {
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('mainApp').style.display = 'none';
+        }
+
+        function showApp() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+
+            document.getElementById('welcomeText').innerText = `${currentUser.role === 'teacher' ? 'أستاذ' : 'الطالب'}: ${currentUser.name}`;
+
+            if (currentUser.role === 'teacher') {
+                document.querySelectorAll('.teacher-only').forEach(el => el.style.display = 'block');
+                document.querySelectorAll('.student-only').forEach(el => el.style.display = 'none');
+            } else {
+                document.querySelectorAll('.teacher-only').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.student-only').forEach(el => el.style.display = 'flex');
+            }
+
+            renderVideos();
+            renderExams();
+            renderHomework();
+            renderProfile();
+            renderStudentsTable();
+            switchTab('dashboard');
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+
+            const targetSection = document.getElementById(tabId + 'Section');
+            if (targetSection) targetSection.classList.add('active');
+        }
+
+        // --- الفيديوهات ---
+        function saveVideo() {
+            const title = document.getElementById('vidTitle').value.trim();
+            let url = document.getElementById('vidUrl').value.trim();
+            const grade = document.getElementById('vidGrade').value;
+
+            if (!title || !url) return alert('يرجى تعبئة جميع الحقول');
+
+            if (url.includes('watch?v=')) {
+                url = url.replace('watch?v=', 'embed/');
+            }
+
+            videos.push({ id: Date.now(), title, url, grade });
+            localStorage.setItem('videos', JSON.stringify(videos));
+
+            document.getElementById('vidTitle').value = '';
+            document.getElementById('vidUrl').value = '';
+            renderVideos();
+        }
+
+        function deleteVideo(id) {
+            if (confirm('هل أنت تأكد من حذف الفيديو؟')) {
+                videos = videos.filter(v => v.id !== id);
+                localStorage.setItem('videos', JSON.stringify(videos));
+                renderVideos();
+            }
+        }
+
+        function renderVideos() {
+            const list = document.getElementById('videosList');
+            list.innerHTML = '';
+
+            videos.forEach(v => {
+                if (currentUser.role === 'student' && v.grade !== 'all' && v.grade !== currentUser.grade) return;
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <h3>${v.title}</h3>
+                    <p style="font-size:12px; color:var(--math-gold);">المرحلة: ${v.grade === 'all' ? 'عام' : v.grade}</p>
+                    <div class="video-container">
+                        <iframe src="${v.url}" allowfullscreen></iframe>
+                    </div>
+                    ${currentUser.role === 'teacher' ? `<button class="btn-danger" onclick="deleteVideo(${v.id})">حذف الفيديو</button>` : ''}
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        // --- إنشاء وتعديل وإدارة الأسئلة للامتحان ---
+        function addQuestionField() {
+            const container = document.getElementById('questionsContainer');
+            questionCounter++;
+            const qId = 'q_box_' + Date.now() + '_' + questionCounter;
+
+            const qHTML = `
+                <div class="question-box" id="${qId}">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+                        <h5>سؤال جديد</h5>
+                        <button class="btn-danger" onclick="removeQuestionField('${qId}')"><i class="fas fa-minus-circle"></i> إنقاص/حذف هذا السؤال</button>
+                    </div>
+                    <input type="text" class="form-control q-title" placeholder="نص السؤال" style="margin-bottom:8px;">
+                    <input type="text" class="form-control q-opt0" placeholder="الخيار الأول" style="margin-bottom:4px;">
+                    <input type="text" class="form-control q-opt1" placeholder="الخيار الثاني" style="margin-bottom:4px;">
+                    <input type="text" class="form-control q-opt2" placeholder="الخيار الثالث" style="margin-bottom:4px;">
+                    <input type="text" class="form-control q-opt3" placeholder="الخيار الرابع" style="margin-bottom:8px;">
+                    <label>رقم الاختيار الصحيح (0 أو 1 أو 2 أو 3):</label>
+                    <input type="number" class="form-control q-correct" min="0" max="3" value="0">
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', qHTML);
+        }
+
+        function removeQuestionField(qId) {
+            const el = document.getElementById(qId);
+            if (el) el.remove();
+        }
+
+        function saveExam() {
+            const title = document.getElementById('examTitle').value;
+            const duration = parseInt(document.getElementById('examDuration').value) || 30;
+            const boxes = document.querySelectorAll('.question-box');
+
+            if (!title || boxes.length === 0) return alert('يرجى كتابة عنوان الامتحان وإضافة سؤال واحد على الأقل');
+
+            const questions = [];
+            boxes.forEach(box => {
+                questions.push({
+                    title: box.querySelector('.q-title').value,
+                    options: [
+                        box.querySelector('.q-opt0').value,
+                        box.querySelector('.q-opt1').value,
+                        box.querySelector('.q-opt2').value,
+                        box.querySelector('.q-opt3').value
+                    ],
+                    correct: parseInt(box.querySelector('.q-correct').value) || 0
+                });
+            });
+
+            exams.push({ id: Date.now(), title, duration, published: true, questions });
+            localStorage.setItem('exams', JSON.stringify(exams));
+
+            alert('تم نشر الامتحان بنجاح!');
+            document.getElementById('examTitle').value = '';
+            document.getElementById('questionsContainer').innerHTML = '';
+            renderExams();
+        }
+
+        function toggleExamPublish(id) {
+            const exam = exams.find(e => e.id === id);
+            if (exam) {
+                exam.published = !exam.published;
+                localStorage.setItem('exams', JSON.stringify(exams));
+                renderExams();
+            }
+        }
+
+        function deleteExam(id) {
+            if (confirm('هل أنت تأكد من حذف الامتحان؟')) {
+                exams = exams.filter(e => e.id !== id);
+                localStorage.setItem('exams', JSON.stringify(exams));
+                renderExams();
+            }
+        }
+
+        function renderExams() {
+            const list = document.getElementById('examsList');
+            list.innerHTML = '';
+
+            exams.forEach(exam => {
+                if (currentUser.role === 'student' && !exam.published) return;
+
+                const hasTaken = results.some(r => r.examId === exam.id && r.studentPhone === currentUser.studentPhone);
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <h3>${exam.title}</h3>
+                    <p><i class="fas fa-clock"></i> زمن الامتحان: ${exam.duration} دقيقة</p>
+                    <p><i class="fas fa-question-circle"></i> عدد الأسئلة: ${exam.questions.length}</p>
+
+                    ${currentUser.role === 'student' ? `
+                        ${hasTaken ? '<span style="color:var(--success); font-weight:bold;"><i class="fas fa-check-circle"></i> تم أداء هذا الامتحان</span>' : 
+                        `<button class="btn-primary" onclick="startExam(${exam.id})">بدء الامتحان الآن</button>`}
+                    ` : `
+                        <div style="display:flex; gap:8px;">
+                            <button class="btn-secondary" onclick="toggleExamPublish(${exam.id})">${exam.published ? 'إلغاء النشر' : 'نشر'}</button>
+                            <button class="btn-danger" onclick="deleteExam(${exam.id})">حذف</button>
+                        </div>
+                    `}
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        // --- أداء الامتحان بتقديم ورجوع الأسئلة مع وقت الامتحان ---
+        function startExam(id) {
+            activeExam = exams.find(e => e.id === id);
+            if (!activeExam) return;
+
+            currentQuestionIndex = 0;
+            studentAnswers = new Array(activeExam.questions.length).fill(null);
+
+            document.getElementById('currentExamTitle').innerText = activeExam.title;
+            switchTab('takeExam');
+            renderSingleQuestion();
+
+            examTimeLeft = activeExam.duration * 60;
+            updateTimerDisplay();
+
+            currentExamTimer = setInterval(() => {
+                examTimeLeft--;
+                updateTimerDisplay();
+
+                if (examTimeLeft <= 0) {
+                    clearInterval(currentExamTimer);
+                    alert('انتهى وقت الامتحان تماماً! يتم التسليم تلقائياً الآن.');
+                    submitExam(true);
+                }
+            }, 1000);
+        }
+
+        function renderSingleQuestion() {
+            const container = document.getElementById('singleQuestionRender');
+            const q = activeExam.questions[currentQuestionIndex];
+
+            container.innerHTML = `
+                <div class="question-box">
+                    <p style="font-size: 16px;"><strong>السؤال ${currentQuestionIndex + 1} من ${activeExam.questions.length}: ${q.title}</strong></p>
+                    <div style="margin-top: 15px;">
+                        ${q.options.map((opt, oIdx) => `
+                            <label class="option-item">
+                                <input type="radio" name="current_q_opt" value="${oIdx}" ${studentAnswers[currentQuestionIndex] === oIdx ? 'checked' : ''} onchange="saveAnswer(${oIdx})">
+                                ${opt}
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('prevQBtn').style.display = currentQuestionIndex === 0 ? 'none' : 'inline-block';
+            document.getElementById('nextQBtn').style.display = currentQuestionIndex === activeExam.questions.length - 1 ? 'none' : 'inline-block';
+        }
+
+        function saveAnswer(optionIndex) {
+            studentAnswers[currentQuestionIndex] = optionIndex;
+        }
+
+        function navigateQuestion(dir) {
+            currentQuestionIndex += dir;
+            renderSingleQuestion();
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(examTimeLeft / 60);
+            const seconds = examTimeLeft % 60;
+            document.getElementById('timerDisplay').innerText = 
+                `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        function submitExam(isAuto = false) {
+            if(currentExamTimer) clearInterval(currentExamTimer);
+
+            let score = 0;
+            activeExam.questions.forEach((q, idx) => {
+                if (studentAnswers[idx] === q.correct) score++;
+            });
+
+            const resultObj = {
+                studentName: currentUser.name,
+                studentPhone: currentUser.studentPhone,
+                grade: currentUser.grade,
+                examId: activeExam.id,
+                examTitle: activeExam.title,
+                score: score,
+                total: activeExam.questions.length,
+                answers: studentAnswers,
+                questions: activeExam.questions,
+                date: new Date().toLocaleDateString('ar-EG')
+            };
+
+            results.push(resultObj);
+            localStorage.setItem('results', JSON.stringify(results));
+
+            alert(`تم تسليم الامتحان! درجتك هي: ${score} من ${activeExam.questions.length}`);
+            renderExams();
+            renderProfile();
+            renderStudentsTable();
+            switchTab('profile');
+        }
+
+        // --- مراجعة الإجابات للطالب ---
+        function reviewExam(resultIndex) {
+            const myResults = results.filter(r => r.studentPhone === currentUser.studentPhone);
+            const res = myResults[resultIndex];
+
+            const container = document.getElementById('reviewQuestionsContent');
+            container.innerHTML = '';
+
+            res.questions.forEach((q, idx) => {
+                const userAns = res.answers[idx];
+                const isCorrect = userAns === q.correct;
+
+                container.innerHTML += `
+                    <div class="question-box ${isCorrect ? 'review-correct' : 'review-wrong'}">
+                        <p><strong>س${idx + 1}: ${q.title}</strong></p>
+                        <p style="margin-top:8px;">إجابتك: ${userAns !== null ? q.options[userAns] : 'لم تجب'} ${isCorrect ? '✓' : '✗'}</p>
+                        ${!isCorrect ? `<p style="color:var(--success); font-weight:bold;">الإجابة الصحيحة: ${q.options[q.correct]}</p>` : ''}
+                    </div>
+                `;
+            });
+
+            document.getElementById('reviewExamBox').style.display = 'block';
+        }
+
+        // --- الواجبات المنزلية ---
+        function saveHomework() {
+            const title = document.getElementById('hwTitle').value.trim();
+            const desc = document.getElementById('hwDesc').value.trim();
+
+            if (!title) return alert('يرجى كتابة عنوان الواجب');
+
+            homeworks.push({ id: Date.now(), title, desc, published: true });
+            localStorage.setItem('homeworks', JSON.stringify(homeworks));
+
+            document.getElementById('hwTitle').value = '';
+            document.getElementById('hwDesc').value = '';
+            renderHomework();
+        }
+
+        function toggleHwPublish(id) {
+            const hw = homeworks.find(h => h.id === id);
+            if (hw) {
+                hw.published = !hw.published;
+                localStorage.setItem('homeworks', JSON.stringify(homeworks));
+                renderHomework();
+            }
+        }
+
+        function deleteHw(id) {
+            if (confirm('هل تريد حذف الواجب؟')) {
+                homeworks = homeworks.filter(h => h.id !== id);
+                localStorage.setItem('homeworks', JSON.stringify(homeworks));
+                renderHomework();
+            }
+        }
+
+        function renderHomework() {
+            const list = document.getElementById('homeworkList');
+            list.innerHTML = '';
+
+            homeworks.forEach(hw => {
+                if (currentUser.role === 'student' && !hw.published) return;
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <h3>${hw.title}</h3>
+                    <p>${hw.desc}</p>
+                    ${currentUser.role === 'teacher' ? `
+                        <div style="display:flex; gap:8px;">
+                            <button class="btn-secondary" onclick="toggleHwPublish(${hw.id})">${hw.published ? 'إلغاء النشر' : 'نشر'}</button>
+                            <button class="btn-danger" onclick="deleteHw(${hw.id})">حذف</button>
+                        </div>
+                    ` : ''}
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        // --- الملف الشخصي وجدول النتائج ---
+        function renderProfile() {
+            if (!currentUser || currentUser.role !== 'student') return;
+
+            document.getElementById('profName').innerText = 'الاسم: ' + currentUser.name;
+            document.getElementById('profGrade').innerText = 'المرحلة: ' + currentUser.grade;
+            document.getElementById('profStudentPhone').innerText = 'رقم الطالب: ' + currentUser.studentPhone;
+            document.getElementById('profParentPhone').innerText = 'رقم ولي الأمر: ' + currentUser.parentPhone;
+
+            const tbody = document.getElementById('studentResultsTable');
+            tbody.innerHTML = '';
+
+            const myResults = results.filter(r => r.studentPhone === currentUser.studentPhone);
+            myResults.forEach((r, idx) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${r.examTitle}</td>
+                        <td>${r.score} / ${r.total}</td>
+                        <td>${r.date}</td>
+                        <td><button class="btn-secondary" onclick="reviewExam(${idx})">عرض الإجابات والتصحيح</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderStudentsTable() {
+            if (!currentUser || currentUser.role !== 'teacher') return;
+
+            const tbody = document.getElementById('teachersStudentsTable');
+            tbody.innerHTML = '';
+
+            students.forEach(st => {
+                const stResults = results.filter(r => r.studentPhone === st.studentPhone);
+                const scoresText = stResults.map(r => `${r.examTitle}: (${r.score}/${r.total})`).join(' | ') || 'لم يؤد امتحانات بعد';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${st.name}</td>
+                        <td>${st.grade || '-'}</td>
+                        <td>${st.studentPhone}</td>
+                        <td>${st.parentPhone}</td>
+                        <td>${scoresText}</td>
+                        <td>
+                            <button class="btn-danger" onclick="deleteStudentAccount('${st.studentPhone}')"><i class="fas fa-user-slash"></i> حذف حساب الطالب</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // حذف أكونت الطالب نهائياً من جانب الأستاذ
+        function deleteStudentAccount(phone) {
+            if (confirm('هل أنت متأكد من حذف حساب هذا الطالب ونتائجه نهائياً من المنصة؟')) {
+                students = students.filter(s => s.studentPhone !== phone);
+                results = results.filter(r => r.studentPhone !== phone);
+
+                localStorage.setItem('students', JSON.stringify(students));
+                localStorage.setItem('results', JSON.stringify(results));
+
+                renderStudentsTable();
+                alert('تم حذف حساب الطالب بنجاح');
+            }
+        }
+    </script>
+</body>
+</html>
